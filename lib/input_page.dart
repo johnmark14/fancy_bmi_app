@@ -5,12 +5,11 @@ import 'icon_content.dart';
 
 const bottomContainerHeight = 80.0;
 
-const appColorPalette = {
-  "activeCardColor": 0xff1d1e33,
-  "inactiveCardColor": 0xff111328,
-  "bottomContainerColor": 0xffeb1555,
-  "iconColor": 0xff8d8e98
-};
+const activeCardColor = Color(0xff1d1e33);
+const inactiveCardColor = Color(0xff111328);
+const bottomContainerColor = Color(0xffeb1555);
+const iconColor = Color(0xff8d8e98);
+
 enum Gender { male, female }
 
 class InputPage extends StatefulWidget {
@@ -19,30 +18,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleCardColor = Color(appColorPalette["inactiveCardColor"]);
-  Color femaleCardColor = Color(appColorPalette["inactiveCardColor"]);
-
-  //1 = male, 2 female
-  void updateColor(Gender selectedGender) {
-    //male card pressed
-    if (selectedGender == Gender.male) {
-      if (maleCardColor == Color(appColorPalette["inactiveCardColor"])) {
-        maleCardColor = Color(appColorPalette["activeCardColor"]);
-        femaleCardColor = Color(appColorPalette["inactiveCardColor"]);
-      } else {
-        maleCardColor = Color(appColorPalette["inactiveCardColor"]);
-      }
-    }
-    //female card pressed
-    if (selectedGender == Gender.female) {
-      if (femaleCardColor == Color(appColorPalette["inactiveCardColor"])) {
-        femaleCardColor = Color(appColorPalette["activeCardColor"]);
-        maleCardColor = Color(appColorPalette["inactiveCardColor"]);
-      } else {
-        femaleCardColor = Color(appColorPalette["inactiveCardColor"]);
-      }
-    }
-  }
+  Gender selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +36,13 @@ class _InputPageState extends State<InputPage> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        updateColor(Gender.male);
+                        selectedGender = Gender.male;
                       });
                     },
                     child: ReusableCard(
-                      color: maleCardColor,
+                      color: selectedGender == Gender.male
+                          ? activeCardColor
+                          : inactiveCardColor,
                       cardChild: IconContent(
                         icon: FontAwesomeIcons.mars,
                         label: "MALE",
@@ -77,11 +55,13 @@ class _InputPageState extends State<InputPage> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        updateColor(Gender.female);
+                        selectedGender = Gender.female;
                       });
                     },
                     child: ReusableCard(
-                      color: femaleCardColor,
+                      color: selectedGender == Gender.female
+                          ? activeCardColor
+                          : inactiveCardColor,
                       cardChild: IconContent(
                         icon: FontAwesomeIcons.venus,
                         label: "FEMALE",
@@ -94,7 +74,7 @@ class _InputPageState extends State<InputPage> {
           ),
           Expanded(
             child: ReusableCard(
-              color: Color(appColorPalette["activeCardColor"]),
+              color: activeCardColor,
             ),
           ),
           Expanded(
@@ -102,19 +82,19 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
-                    color: Color(appColorPalette["activeCardColor"]),
+                    color: activeCardColor,
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
-                    color: Color(appColorPalette["activeCardColor"]),
+                    color: activeCardColor,
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            color: Color(appColorPalette["bottomContainerColor"]),
+            color: bottomContainerColor,
             margin: EdgeInsets.only(top: 10.0),
             width: double.infinity,
             height: bottomContainerHeight,
